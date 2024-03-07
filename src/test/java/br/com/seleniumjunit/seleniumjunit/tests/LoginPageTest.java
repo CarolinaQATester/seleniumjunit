@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 
 public class LoginPageTest {
     private LoginPage loginPage;
-    private final String URL = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
+    private final String URL = "https://www.saucedemo.com/";
 
     @Before
     public void setUp() {
@@ -25,7 +25,7 @@ public class LoginPageTest {
     public void preencherLoginValido() {
         this.loginPage.preencherLoginValido();
 
-        Assertions.assertEquals("Dashboard", this.loginPage.obterMensagem(),
+        Assertions.assertEquals("Products", this.loginPage.obterMensagem(),
                 "A mensagem exibida após o login não corresponde à esperada.");
 
         Assertions.assertNotEquals(URL, this.loginPage.getCurrentUrl(),
