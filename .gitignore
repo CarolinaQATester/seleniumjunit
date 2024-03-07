@@ -3,3 +3,6 @@ target
 browsers.json
 mvnw
 mvnw.cmd
+
+.idea
+.vscode
