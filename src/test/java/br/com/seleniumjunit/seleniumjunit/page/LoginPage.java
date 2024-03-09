@@ -1,32 +1,71 @@
 package br.com.seleniumjunit.seleniumjunit.page;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class LoginPage extends BasePage {
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    // Locators    private By tagMensagem = By.tagName("h6");
+public class LoginPage {
 
+    WebDriver driver;
 
-    public By inputUsername = By.xpath("//*[@id='user-name']");
+    // Locators
+     By inputUsername = By.xpath("//*[@id='user-name']");
 
-    public By inputPassword = By.xpath("//*[@id='password']");
+     By inputPassword = By.xpath("//*[@id='password']");
 
-    public By buttonLogin = By.xpath("//*[@id='login-button']");
+     By buttonLogin = By.xpath("//*[@id='login-button']");
 
-    public By h6Dashboard = By.xpath("//span[@class='title']");
+     By tituloLoginPage = By.xpath("//title");
 
+     By msgUsuarioInvalido = By.tagName("h3");
 
+     By msgUsuarioBloqueado = By.tagName("h3");
 
-
-    public void preencherLoginValido() {
-        type("standard_user", inputUsername);
-        type("secret_sauce", inputPassword);
-        click(buttonLogin);
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
     }
 
-    public String obterMensagem() {
-        return super.getText(h6Dashboard);
+    //Definir credencial valida
+    public void devePreencherCampoUserName(String username) {
+        driver.findElement(inputUsername).sendKeys(username);
+
+    }
+    public void devePreencherCampoPassword(String password){
+        driver.findElement(inputPassword).sendKeys(password);
+    }
+
+    //Clicar no botao login
+    public void deveClicarLogin(){
+        driver.findElement(buttonLogin).click();
+    }
+    @Step("Verificar o titulo da pagina de login Page")
+    public void deveVerificarOTituloDaPagina(){
+        String loginPageTitulo = driver.findElement(tituloLoginPage).getText();
+        assertTrue(loginPageTitulo.contains("Swag Labs"));
+    }
+    @Step("Verificar a mensagem de usuario invalido")
+    public void deveObterMensagemUsuarioInvalido(){
+        String credencialInvalidaErroMessage = driver.findElement(msgUsuarioInvalido).getText();
+        assertTrue(credencialInvalidaErroMessage.contains("Epic sadface: Username and password do not match any user in this service"));
+    }
+    @Step("Verificar a mensagem de usuario bloqueado")
+    public void deveObterMensagemUsuarioBloqueado(){
+        String usuarioBloqueadoErroMessage = driver.findElement(msgUsuarioBloqueado).getText();
+        assertTrue(usuarioBloqueadoErroMessage.contains("Epic sadface: Sorry, this user has been locked out."));
+    }
+
+    public void loginValido(String userName, String password){
+        this.devePreencherCampoUserName(userName);
+        this.devePreencherCampoPassword(password);
+        this.deveClicarLogin();
+    }
+    public void loginInvalido(String userName, String password){
+        this.devePreencherCampoUserName(userName);
+        this.devePreencherCampoPassword(password);
+        this.deveClicarLogin();
     }
 }

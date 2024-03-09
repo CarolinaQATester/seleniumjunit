@@ -1,34 +1,42 @@
 package br.com.seleniumjunit.seleniumjunit.tests;
 
 import br.com.seleniumjunit.seleniumjunit.page.LoginPage;
-import org.junit.After;
-import org.junit.Before;
+import io.qameta.allure.*;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 
-public class LoginPageTest {
-    private LoginPage loginPage;
-    private final String URL = "https://www.saucedemo.com/";
+@Epic("Teste regressivo")
+@Feature("Login Page Test")
+public class LoginPageTest extends BaseTest {
+    LoginPage loginPage;
+    @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verificar titulo da pagina")
+    public void deveVerificarLoginPage() {
+        //criar um objeto de Login Page
+       loginPage = new LoginPage(driver);
+       //verifica o titulo da pagina
+        loginPage.deveVerificarOTituloDaPagina();
 
-    @Before
-    public void setUp() {
-        this.loginPage = new LoginPage();
-        this.loginPage.visit(this.URL);
+
     }
+    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Deve realizar login com credenciais validas")
+    public void devePreencherCredencialValida(){
 
-    @After
-    public void tearDown() {
-        this.loginPage.quitWebDriver();
+        loginPage = new LoginPage(driver);
+        loginPage.loginValido("standard_user", "secret_sauce");
+        loginPage.deveClicarLogin();
+
     }
 
     @Test
-    public void preencherLoginValido() {
-        this.loginPage.preencherLoginValido();
+    @Severity(SeverityLevel.BLOCKER)
+    @Description("Deve realizar login com credenciais invalidas")
+    public void devePreencherCredencialInvalida(){
+        loginPage = new LoginPage(driver);
+        loginPage.loginInvalido("standard_use", "secret_sauce");
 
-        Assertions.assertEquals("Products", this.loginPage.obterMensagem(),
-                "A mensagem exibida após o login não corresponde à esperada.");
-
-        Assertions.assertNotEquals(URL, this.loginPage.getCurrentUrl(),
-                "A URL após o login não deveria ser igual à URL inicial.");
+        loginPage.deveObterMensagemUsuarioInvalido();
     }
 }
