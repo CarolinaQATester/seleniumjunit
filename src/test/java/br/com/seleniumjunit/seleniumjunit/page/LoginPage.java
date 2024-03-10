@@ -1,25 +1,27 @@
 package br.com.seleniumjunit.seleniumjunit.page;
 
 import io.qameta.allure.Step;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
+
 
 public class LoginPage {
 
     WebDriver driver;
 
     // Locators
-     By inputUsername = By.xpath("//*[@id='user-name']");
+     By inputUsername = By.xpath("//input[@id='user-name']");
 
-     By inputPassword = By.xpath("//*[@id='password']");
+     By inputPassword = By.xpath("//input[@id='password']");
 
      By buttonLogin = By.xpath("//*[@id='login-button']");
 
-     By tituloLoginPage = By.xpath("//title");
+     By tituloLoginPage = By.xpath("//title[contains(text(),'Swag Labs')]");
+
+     By tituloProducts = By.xpath("//span[contains(text(),'Products')]");
 
      By msgUsuarioInvalido = By.tagName("h3");
 
@@ -45,17 +47,23 @@ public class LoginPage {
     @Step("Verificar o titulo da pagina de login Page")
     public void deveVerificarOTituloDaPagina(){
         String loginPageTitulo = driver.findElement(tituloLoginPage).getText();
-        assertTrue(loginPageTitulo.contains("Swag Labs"));
+        System.out.println(loginPageTitulo.contains("Swag Labs"));
+        Assert.assertFalse(loginPageTitulo.contains("Swag Labs"));
+    }
+    public void deveVerificarLoginSucesso(){
+        String loginSucesso = driver.findElement(tituloProducts).getText();
+        System.out.println(loginSucesso.contains("Products"));
+        Assert.assertTrue(loginSucesso.contains("Products"));
     }
     @Step("Verificar a mensagem de usuario invalido")
     public void deveObterMensagemUsuarioInvalido(){
         String credencialInvalidaErroMessage = driver.findElement(msgUsuarioInvalido).getText();
-        assertTrue(credencialInvalidaErroMessage.contains("Epic sadface: Username and password do not match any user in this service"));
+        Assert.assertTrue(credencialInvalidaErroMessage.contains("Epic sadface: Username and password do not match any user in this service"));
     }
     @Step("Verificar a mensagem de usuario bloqueado")
     public void deveObterMensagemUsuarioBloqueado(){
         String usuarioBloqueadoErroMessage = driver.findElement(msgUsuarioBloqueado).getText();
-        assertTrue(usuarioBloqueadoErroMessage.contains("Epic sadface: Sorry, this user has been locked out."));
+        Assert.assertTrue(usuarioBloqueadoErroMessage.contains("Epic sadface: Sorry, this user has been locked out."));
     }
 
     public void loginValido(String userName, String password){

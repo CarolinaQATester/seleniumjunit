@@ -8,6 +8,7 @@ import org.junit.Test;
 @Feature("Login Page Test")
 public class LoginPageTest extends BaseTest {
     LoginPage loginPage;
+
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Description("Verificar titulo da pagina")
@@ -28,6 +29,8 @@ public class LoginPageTest extends BaseTest {
         loginPage.loginValido("standard_user", "secret_sauce");
         loginPage.deveClicarLogin();
 
+        loginPage.deveVerificarLoginSucesso();
+
     }
 
     @Test
@@ -36,6 +39,7 @@ public class LoginPageTest extends BaseTest {
     public void devePreencherCredencialInvalida(){
         loginPage = new LoginPage(driver);
         loginPage.loginInvalido("standard_use", "secret_sauce");
+        loginPage.deveClicarLogin();
 
         loginPage.deveObterMensagemUsuarioInvalido();
     }

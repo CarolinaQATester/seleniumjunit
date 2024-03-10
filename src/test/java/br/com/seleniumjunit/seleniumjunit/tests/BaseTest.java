@@ -2,8 +2,8 @@ package br.com.seleniumjunit.seleniumjunit.tests;
 
 import br.com.seleniumjunit.seleniumjunit.page.LoginPage;
 import io.qameta.allure.Step;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.After;
+import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -14,7 +14,7 @@ public class BaseTest {
     private final String URL = "https://www.saucedemo.com/";
 
     @Step("Iniciar aplicação")
-    @BeforeEach
+    @Before
     public void setUp() {
 
         System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
@@ -25,7 +25,7 @@ public class BaseTest {
     }
 
     @Step("Fechar aplicação")
-    @AfterEach
+    @After
     public void tearDown() {
         driver.close();
     }
